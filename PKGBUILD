@@ -1,12 +1,12 @@
 # Maintainer: Stefan Husmann <stefan-husmann@t-online.de>
 pkgname=amaya-git
-pkgver=53.707efb5
-pkgrel=3
+pkgver=31.4d6efcc
+pkgrel=1
 pkgdesc="W3C's WYSIWYG HTML Editor"
 arch=('i686' 'x86_64')
 url="http://www.w3.org/Amaya/"
 license=('W3C')
-depends=('gtk2' 'libsm' 'raptor1' 'glu' 'libxxf86vm')
+depends=('gtk2' 'libsm' 'raptor1' 'glu' 'libxxf86vm' 'wxgtk')
 makedepends=('git' 'perl' 'mesa' 'clang')
 provides=('amaya')
 conflicts=('amaya')
@@ -34,22 +34,22 @@ pkgver() {
 
 build() {
   cd "$srcdir"/$_gitname/
-  bsdtar xf Library/amaya-lib-src.tar
-  cd "$srcdir/$_gitname"/Mesa/configs
-  rm current
-  [[ $CARCH == x86_64 ]] && ln -s linux-x86-64 current
-  [[ $CARCH == i686 ]] && ln -s linux-x86 current
+  ls -l "$startdir"/patches/amaya/*.patch
+  git am "$startdir"/patches/amaya/*.patch
+  tar xvf Library/amaya-lib-src.tar libwww
+  cd "$srcdir"/$_gitname/libwww
+  patch -p1 < "$startdir"/patches/libwww/libwww.patch
   cd "$srcdir"/$_gitname/$_gitname
   if [ -d ./${_gui} ]; then
     rm -rf ${_gui}
   fi
+  #autoconf
   mkdir ${_gui}; cd ${_gui}
 
   #  CC=gcc-4.7 CXX=g++-4.7 LD=g++-4.7 \
-  CC=clang CXX=clang++ \
     ../configure --prefix=/usr/share --exec=/usr/share --datadir=/usr/share \
-    --enable-system-raptor --with-gl --enable-static
-  make 
+    --enable-system-raptor --enable-system-wx --with-gl
+  make LDFLAGS="-lz -lpng -ljpeg -lssl"
 }
 
 package() {

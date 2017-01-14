@@ -1,0 +1,45 @@
+From b51ff9e765071b0734d5f80ecd057adf4c0e0dfa Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Thu, 5 Jan 2017 21:55:49 -0300
+Subject: [PATCH 08/16] Make explicity cast for gzFile on gzread calls
+
+---
+ Amaya/amaya/Xml2thot.c  | 2 +-
+ Amaya/amaya/html2thot.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+ mode change 100644 => 100755 Amaya/amaya/Xml2thot.c
+ mode change 100644 => 100755 Amaya/amaya/html2thot.c
+
+diff --git a/Amaya/amaya/Xml2thot.c b/Amaya/amaya/Xml2thot.c
+old mode 100644
+new mode 100755
+index 5b2e460..51bdb20
+--- a/Amaya/amaya/Xml2thot.c
++++ b/Amaya/amaya/Xml2thot.c
+@@ -5847,7 +5847,7 @@ static void   XmlParse (FILE *infile, CHARSET charset, ThotBool *xmlDec,
+   while (!endOfFile && !XMLNotWellFormed && !XMLInvalidToken)
+     {
+       /* read the XML file */
+-      res = gzread (infile, bufferRead, COPY_BUFFER_SIZE);
++      res = gzread ((gzFile)infile, bufferRead, COPY_BUFFER_SIZE);
+       if (res < 0)
+         return;
+ 
+diff --git a/Amaya/amaya/html2thot.c b/Amaya/amaya/html2thot.c
+old mode 100644
+new mode 100755
+index 5030180..3543e23
+--- a/Amaya/amaya/html2thot.c
++++ b/Amaya/amaya/html2thot.c
+@@ -4349,7 +4349,7 @@ void GetNextHTMLbuffer (FILE *infile, ThotBool *endOfFile,
+       WorkBuffer = FileBuffer;
+     }
+   // need to read a new set of characters
+-  LastCharInWorkBuffer = gzread (infile, &FileBuffer[StartOfRead],
++  LastCharInWorkBuffer = gzread ((gzFile)infile, &FileBuffer[StartOfRead],
+                                  INPUT_FILE_BUFFER_SIZE - StartOfRead);
+   // add previous read characters not managed yet
+   LastCharInWorkBuffer += StartOfRead;
+-- 
+2.11.0
+

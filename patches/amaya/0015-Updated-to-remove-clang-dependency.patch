@@ -1,0 +1,126 @@
+From 2fe946829743e9edde9ee59b6108346f75454b98 Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Tue, 10 Jan 2017 19:27:08 -0300
+Subject: [PATCH 15/16] Updated to remove clang dependency
+
+---
+ Amaya/amaya/Makefile.in | 4 ++--
+ Amaya/batch/app.c       | 4 ++--
+ Amaya/batch/prs.c       | 4 ++--
+ Amaya/batch/str.c       | 4 ++--
+ Amaya/batch/tra.c       | 4 ++--
+ 5 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/Amaya/amaya/Makefile.in b/Amaya/amaya/Makefile.in
+index d539cb4..d3a47a4 100644
+--- a/Amaya/amaya/Makefile.in
++++ b/Amaya/amaya/Makefile.in
+@@ -334,7 +334,7 @@ $(AMAYA)/TextFile.STR : $(AMAYA)/TextFile.S ../bin/str
+ #
+ compTextFileP: $(AMAYA)/TextFileP.PRS
+ $(AMAYA)/TextFileP.PRS : $(AMAYA)/TextFileP.P ../bin/prs
+-	PRS=`pwd`/../bin/prs ; \
++	STR=`pwd`/../bin/str;PRS=`pwd`/../bin/prs;TRA=`pwd`/../bin/tra;\
+ 	cd $(AMAYA); THOTDIR=`pwd`/.. ;export THOTDIR; \
+ 	$$STR $(ALL_AMAYA_OPTIONS) TextFile ;\
+ 	$$PRS $(ALL_AMAYA_OPTIONS) TextFileP ;\
+@@ -401,7 +401,7 @@ $(AMAYA)/XML.STR : $(AMAYA)/XML.S ../bin/str
+ #
+ compXMLP: $(AMAYA)/XMLP.PRS
+ $(AMAYA)/XMLP.PRS : $(AMAYA)/XMLP.P ../bin/prs
+-	PRS=`pwd`/../bin/prs ; \
++	STR=`pwd`/../bin/str;PRS=`pwd`/../bin/prs;TRA=`pwd`/../bin/tra;\
+ 	cd $(AMAYA); THOTDIR=`pwd`/.. ;export THOTDIR; \
+ 	$$STR $(ALL_AMAYA_OPTIONS) XML ;\
+ 	$$PRS $(ALL_AMAYA_OPTIONS) XMLP ;\
+diff --git a/Amaya/batch/app.c b/Amaya/batch/app.c
+index 5a10a63..e930ed8 100644
+--- a/Amaya/batch/app.c
++++ b/Amaya/batch/app.c
+@@ -1622,7 +1622,7 @@ int       main (int argc, char **argv)
+ 		  cmd [pIndex] = (char *) TtaGetMemory (strlen (fileName) + 1);
+ 		  strcpy (cmd [pIndex++], fileName);
+ #else  /* _WINDOWS */
+-		  sprintf (&cmd[i], "-I%s -C %s > %s", pwd, srceFileName, fileName);
++		  sprintf (&cmd[i], "-I%s %s > %s", pwd, srceFileName, fileName);
+ #endif /* _WINDOWS */
+ 		}
+ 	      else
+@@ -1635,7 +1635,7 @@ int       main (int argc, char **argv)
+ 		  cmd [pIndex] = (char *) TtaGetMemory (strlen (fileName) + 1);
+ 		  strcpy (cmd [pIndex++], fileName);
+ #else  /* _WINDOWS */
+-		  sprintf (&cmd[i], "-C %s > %s", srceFileName, fileName);
++		  sprintf (&cmd[i], "%s > %s", srceFileName, fileName);
+ #endif /* _WINDOWS */
+ 		}
+ #ifdef _WINDOWS
+diff --git a/Amaya/batch/prs.c b/Amaya/batch/prs.c
+index 9771690..2afca9e 100644
+--- a/Amaya/batch/prs.c
++++ b/Amaya/batch/prs.c
+@@ -7210,7 +7210,7 @@ int PRSmain (HWND hwnd, HWND statusBar, int argc, char **argv, int *Y)
+               cmd [pIndex] = (char *) TtaGetMemory (strlen (fname) + 1);
+               strcpy (cmd [pIndex++], fname);
+ #else  /* !_WINGUI */
+-              sprintf (&cmd[i], "-I%s -C %s > %s", pwd, srceFileName, fname);
++              sprintf (&cmd[i], "-I%s %s > %s", pwd, srceFileName, fname);
+ #endif /* _WINGUI */
+             }
+           else
+@@ -7223,7 +7223,7 @@ int PRSmain (HWND hwnd, HWND statusBar, int argc, char **argv, int *Y)
+               cmd [pIndex] = (char *) TtaGetMemory (strlen (fname) + 1);
+               strcpy (cmd [pIndex++], fname);
+ #else  /* !_WINGUI */
+-              sprintf (&cmd[i], "-C %s > %s", srceFileName, fname);
++              sprintf (&cmd[i], "%s > %s", srceFileName, fname);
+ #endif /* _WINGUI */
+             }
+ #ifdef _WINGUI
+diff --git a/Amaya/batch/str.c b/Amaya/batch/str.c
+index ca5f3c0..59a88d5 100644
+--- a/Amaya/batch/str.c
++++ b/Amaya/batch/str.c
+@@ -3115,7 +3115,7 @@ int STRmain (HWND hwnd, HWND statusBar, int argc, char **argv, int *Y)
+               cmd [pIndex] = (char *) TtaGetMemory (strlen (fname) + 1);
+               strcpy (cmd [pIndex++], fname);
+ #else  /* !_WINDOWS */
+-              sprintf (&cmd[i], "-I%s -C %s > %s", pwd, srceFileName, fname);
++              sprintf (&cmd[i], "-I%s  %s > %s", pwd, srceFileName, fname);
+ #endif /* _WINDOWS */
+             }
+           else
+@@ -3130,7 +3130,7 @@ int STRmain (HWND hwnd, HWND statusBar, int argc, char **argv, int *Y)
+               cmd [pIndex] = (char *) TtaGetMemory (strlen (fname) + 1);
+               strcpy (cmd [pIndex++], fname);
+ #else  /* !_WINDOWS */
+-              sprintf (&cmd[i], "-C %s > %s", srceFileName, fname);
++              sprintf (&cmd[i], "%s > %s", srceFileName, fname);
+ #endif /* _WINDOWS */
+             } 
+ #ifdef _WINDOWS
+diff --git a/Amaya/batch/tra.c b/Amaya/batch/tra.c
+index 38a0a35..4ae4290 100644
+--- a/Amaya/batch/tra.c
++++ b/Amaya/batch/tra.c
+@@ -3606,7 +3606,7 @@ int main (int argc, char **argv)
+ 	       cmd [pIndex] = (char *) TtaGetMemory (strlen (fname) + 1);
+ 	       strcpy (cmd [pIndex++], fname);
+ #else  /* !_WINGUI */
+-	       sprintf (&cmd[i], "-I%s -C %s > %s", pwd, srceFileName, fname);
++	       sprintf (&cmd[i], "-I%s %s > %s", pwd, srceFileName, fname);
+ #endif /* _WINGUI */
+ 	     }
+ 	   else
+@@ -3619,7 +3619,7 @@ int main (int argc, char **argv)
+                cmd [pIndex] = (char *) TtaGetMemory (strlen (fname) + 2);
+                strcpy (cmd [pIndex++], fname);
+ #else  /* !_WINGUI */
+-               sprintf (&cmd[i], "-C %s > %s", srceFileName, fname);
++               sprintf (&cmd[i], "%s > %s", srceFileName, fname);
+ #endif /* _WINGUI */
+ 	     } 
+ #ifdef _WINGUI
+-- 
+2.11.0
+

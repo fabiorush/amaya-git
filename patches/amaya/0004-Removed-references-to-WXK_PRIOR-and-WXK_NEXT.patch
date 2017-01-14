@@ -1,0 +1,62 @@
+From c7490d10c722b71ed9e81a046a69b931a6a83fa9 Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Thu, 5 Jan 2017 18:04:37 -0300
+Subject: [PATCH 04/16] Removed references to WXK_PRIOR and WXK_NEXT
+
+---
+ Amaya/thotlib/dialogue/appdialogue_wx.c | 11 -----------
+ Amaya/thotlib/internals/h/thot_key.h    |  4 ++--
+ 2 files changed, 2 insertions(+), 13 deletions(-)
+ mode change 100644 => 100755 Amaya/thotlib/dialogue/appdialogue_wx.c
+
+diff --git a/Amaya/thotlib/dialogue/appdialogue_wx.c b/Amaya/thotlib/dialogue/appdialogue_wx.c
+old mode 100644
+new mode 100755
+index f75ff60..6f94b8f
+--- a/Amaya/thotlib/dialogue/appdialogue_wx.c
++++ b/Amaya/thotlib/dialogue/appdialogue_wx.c
+@@ -2235,12 +2235,8 @@ ThotBool TtaHandleSpecialKey( wxKeyEvent& event )
+       proceed_key = ( thot_keysym == WXK_INSERT   ||
+                       thot_keysym == WXK_DELETE   ||
+                       thot_keysym == WXK_HOME     ||
+-                      thot_keysym == WXK_PRIOR    ||
+-                      thot_keysym == WXK_NEXT     ||
+-#ifdef _MACOS
+                       thot_keysym == WXK_PAGEUP   ||
+                       thot_keysym == WXK_PAGEDOWN ||
+-#endif /* _MACOS */
+                       thot_keysym == WXK_END      ||
+                       thot_keysym == WXK_LEFT     ||
+                       thot_keysym == WXK_RIGHT    ||
+@@ -2252,13 +2248,6 @@ ThotBool TtaHandleSpecialKey( wxKeyEvent& event )
+                       thot_keysym == WXK_NUMPAD_ENTER ||
+                       thot_keysym == WXK_TAB );
+ 
+-#ifdef _MACOS
+-      if (proceed_key && thot_keysym == WXK_PAGEUP)
+-        thot_keysym = WXK_PRIOR;
+-      else if (proceed_key && thot_keysym == WXK_PAGEDOWN)
+-        thot_keysym = WXK_NEXT;
+-#endif /* _MACOS */
+-      
+       wxWindow *p_win_focus = wxWindow::FindFocus();
+       wxGLCanvas *p_gl_canvas = wxDynamicCast(p_win_focus, wxGLCanvas);
+       wxSplitterWindow *p_splitter = wxDynamicCast(p_win_focus, wxSplitterWindow);
+diff --git a/Amaya/thotlib/internals/h/thot_key.h b/Amaya/thotlib/internals/h/thot_key.h
+index af73a6e..5fdae0f 100755
+--- a/Amaya/thotlib/internals/h/thot_key.h
++++ b/Amaya/thotlib/internals/h/thot_key.h
+@@ -63,8 +63,8 @@
+ #define THOT_KEY_Right		WXK_RIGHT
+ #define THOT_KEY_Home		WXK_HOME
+ #define THOT_KEY_End		WXK_END
+-#define THOT_KEY_Prior		WXK_PRIOR
+-#define THOT_KEY_Next		WXK_NEXT
++#define THOT_KEY_Prior		WXK_PAGEUP
++#define THOT_KEY_Next		WXK_PAGEDOWN
+ 
+ #endif /* _WX */
+ 
+-- 
+2.11.0
+

@@ -1,0 +1,12 @@
+diff -ruN a/Library/src/SSL/HTSSL.c b/Library/src/SSL/HTSSL.c
+--- a/Library/src/SSL/HTSSL.c	2011-12-21 07:04:38.000000000 -0300
++++ b/Library/src/SSL/HTSSL.c	2017-01-12 18:39:53.523333320 -0300
+@@ -218,8 +218,6 @@
+ 	  meth = SSLv2_client_method();
+ 	  break;
+ 	case HTSSL_V3:
+-	  meth = SSLv3_client_method();
+-	  break;
+ 	case HTSSL_V23:
+ 	  meth = SSLv23_client_method();
+ 	  break;

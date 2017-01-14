@@ -1,0 +1,24 @@
+From 4e5bc38a8af8a925ac5e73c952d377b52d6ed243 Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Tue, 10 Jan 2017 15:12:53 -0300
+Subject: [PATCH 13/16] Fixed wxGLCanvas::GTKInitImplicitContext
+
+---
+ Amaya/thotlib/dialogue/AmayaCanvas.cpp | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/Amaya/thotlib/dialogue/AmayaCanvas.cpp b/Amaya/thotlib/dialogue/AmayaCanvas.cpp
+index fddf5d2..04f475f 100644
+--- a/Amaya/thotlib/dialogue/AmayaCanvas.cpp
++++ b/Amaya/thotlib/dialogue/AmayaCanvas.cpp
+@@ -69,7 +69,6 @@ AmayaCanvas::AmayaCanvas( wxWindow * p_parent_window,
+                           AmayaFrame * p_parent_frame,
+                           wxGLContext * p_shared_context )
+   : wxGLCanvas( p_parent_window,
+-                p_shared_context,
+                 -1,
+                 wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS , _T("AmayaCanvas"),
+                 AmayaApp::GetGL_AttrList() ),
+-- 
+2.11.0
+

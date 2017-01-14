@@ -1,0 +1,30 @@
+From 3746f779f4d26d26f9ae6eb59a0e8180b522b1c2 Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Thu, 5 Jan 2017 21:58:07 -0300
+Subject: [PATCH 09/16] Add check if the dir is open before transversing
+
+---
+ Amaya/amaya/query.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+ mode change 100644 => 100755 Amaya/amaya/query.c
+
+diff --git a/Amaya/amaya/query.c b/Amaya/amaya/query.c
+old mode 100644
+new mode 100755
+index f507b55..f6bbce0
+--- a/Amaya/amaya/query.c
++++ b/Amaya/amaya/query.c
+@@ -1959,6 +1959,10 @@ static ThotBool RecCleanCache (char *dirname)
+ 
+   /* try to delete the files & directorys inside */
+   wxDir wx_dir(wx_dir_name);
++
++  if (!wx_dir.IsOpened())
++    return TRUE;
++
+   cont = wx_dir.GetFirst (&name);
+   while (cont)
+     {
+-- 
+2.11.0
+

@@ -1,0 +1,27 @@
+From f24aa6ce482652a492a4c15e374f2575b02ce0eb Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Thu, 5 Jan 2017 19:28:17 -0300
+Subject: [PATCH 07/16] Added missing colourdata.h include
+
+---
+ Amaya/amaya/wxdialog/PreferenceDlgWX.h | 1 +
+ 1 file changed, 1 insertion(+)
+ mode change 100644 => 100755 Amaya/amaya/wxdialog/PreferenceDlgWX.h
+
+diff --git a/Amaya/amaya/wxdialog/PreferenceDlgWX.h b/Amaya/amaya/wxdialog/PreferenceDlgWX.h
+old mode 100644
+new mode 100755
+index 333c29a..970b854
+--- a/Amaya/amaya/wxdialog/PreferenceDlgWX.h
++++ b/Amaya/amaya/wxdialog/PreferenceDlgWX.h
+@@ -8,6 +8,7 @@
+ //-----------------------------------------------------------------------------
+ #include "wx/notebook.h"
+ #include "wx/listbook.h"
++#include <wx/colourdata.h>
+ 
+ #include "AmayaDialog.h"
+ #include "MENUconf.h"
+-- 
+2.11.0
+

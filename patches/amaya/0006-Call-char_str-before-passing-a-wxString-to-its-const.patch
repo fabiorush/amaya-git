@@ -1,0 +1,29 @@
+From 39e735f6ce19e7e4e6777218fbd8a6e71e591d1c Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Thu, 5 Jan 2017 19:25:38 -0300
+Subject: [PATCH 06/16] Call char_str() before passing a wxString to its
+ constructor
+
+---
+ Amaya/amaya/wxdialog/SendByMailDlgWX.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ mode change 100644 => 100755 Amaya/amaya/wxdialog/SendByMailDlgWX.cpp
+
+diff --git a/Amaya/amaya/wxdialog/SendByMailDlgWX.cpp b/Amaya/amaya/wxdialog/SendByMailDlgWX.cpp
+old mode 100644
+new mode 100755
+index 1344d95..06389ab
+--- a/Amaya/amaya/wxdialog/SendByMailDlgWX.cpp
++++ b/Amaya/amaya/wxdialog/SendByMailDlgWX.cpp
+@@ -246,7 +246,7 @@ void SendByMailDlgWX::LoadRecentList()
+   if(lastRcpt)
+   {
+     wxString rcpts(lastRcpt, wxConvUTF8);
+-    m_rcptArray = ::wxStringTokenize(wxString(rcpts, wxConvUTF8), wxT("|"));
++    m_rcptArray = ::wxStringTokenize(wxString(rcpts.char_str(), wxConvUTF8), wxT("|"));
+   }
+   if(m_rcptArray.GetCount()==0)
+     m_rcptArray.Add(wxString(TtaGetEnvString ("EMAILS_FROM_ADDRESS"), wxConvUTF8));
+-- 
+2.11.0
+

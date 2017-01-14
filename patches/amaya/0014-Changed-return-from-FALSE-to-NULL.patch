@@ -1,0 +1,43 @@
+From b9364b21d15b6d6519d0ab8be8c0ff69ca7f2779 Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Tue, 10 Jan 2017 18:09:27 -0300
+Subject: [PATCH 14/16] Changed return from FALSE to NULL
+
+---
+ Amaya/amaya/templates.c     | 5 +----
+ Amaya/annotlib/ANNOTtools.c | 2 +-
+ 2 files changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/Amaya/amaya/templates.c b/Amaya/amaya/templates.c
+index f4c0fac..964c9de 100644
+--- a/Amaya/amaya/templates.c
++++ b/Amaya/amaya/templates.c
+@@ -215,11 +215,8 @@ char* GetDocumentInstanceTemplateUrl(Document doc)
+   XTigerTemplate t = GetXTigerDocTemplate(doc);
+   if (t)
+     return t->base_uri;
+-  else
+-    return FALSE;
+-#else /* TEMPLATES */
+-  return NULL;
+ #endif /* TEMPLATES */
++  return NULL;
+ }
+ 
+ /*----------------------------------------------------------------------
+diff --git a/Amaya/annotlib/ANNOTtools.c b/Amaya/annotlib/ANNOTtools.c
+index a43d246..19eed18 100644
+--- a/Amaya/annotlib/ANNOTtools.c
++++ b/Amaya/annotlib/ANNOTtools.c
+@@ -2146,7 +2146,7 @@ char * ANNOT_PreparePostBody (Document doc)
+   annot = GetMetaData (DocumentMeta[doc]->source_doc, doc);
+ 
+   if (!annot)
+-    return FALSE;
++    return NULL;
+ 
+   /* compute the temporary file names */
+   ptr = TtaGetEnvString ("APP_TMPDIR");
+-- 
+2.11.0
+

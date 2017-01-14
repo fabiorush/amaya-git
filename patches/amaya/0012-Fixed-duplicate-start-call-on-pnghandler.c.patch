@@ -1,0 +1,37 @@
+From c97651b487432c8f69fce9efc9781d7ea5daea17 Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Mon, 9 Jan 2017 17:00:09 -0300
+Subject: [PATCH 12/16] Fixed duplicate start call on pnghandler.c
+
+---
+ Amaya/thotlib/image/pnghandler.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+ mode change 100755 => 100644 Amaya/thotlib/image/pnghandler.c
+
+diff --git a/Amaya/thotlib/image/pnghandler.c b/Amaya/thotlib/image/pnghandler.c
+old mode 100755
+new mode 100644
+index 964ece3..2c021bf
+--- a/Amaya/thotlib/image/pnghandler.c
++++ b/Amaya/thotlib/image/pnghandler.c
+@@ -208,7 +208,7 @@ static unsigned char *ReadPng (FILE *pfFile, unsigned int *width, unsigned int *
+     /* Opengl Texture inversion */   
+     for (i = 0; i < lh; i++)
+       ppbRowPointers[i] = pixels + ((lh - (i+1)) * ulRowBytes * sizeof(png_byte));    
+-    png_start_read_image (png_ptr); 
++    //png_start_read_image (png_ptr); 
+     /* depending on interlacing, reading the data*/
+     for (i = 0; i < passes; i++)
+       for (j = 0; j < lh; j++)
+@@ -459,7 +459,7 @@ static unsigned char *ReadPng (FILE *infile, int *width, int *height,
+     png_error (png_ptr, "Unknown PNG color type ");
+   
+   /*png_read_update_info (png_ptr, info_ptr);*/
+-  png_start_read_image (png_ptr);
++  // //png_start_read_image (png_ptr);
+   for (i = 0; i < passes; i++)
+     for (j = 0; j < *height; j++)
+       png_read_row (png_ptr, NULL, row_pointers[j]);
+-- 
+2.11.0
+

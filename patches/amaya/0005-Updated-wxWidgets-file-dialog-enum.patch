@@ -1,0 +1,165 @@
+From 65f95d310a6574593574dcb629a5d9491cda198d Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Thu, 5 Jan 2017 19:18:33 -0300
+Subject: [PATCH 05/16] Updated wxWidgets file dialog enum
+
+---
+ Amaya/amaya/wxdialog/HRefDlgWX.cpp       | 2 +-
+ Amaya/amaya/wxdialog/ImageDlgWX.cpp      | 2 +-
+ Amaya/amaya/wxdialog/ObjectDlgWX.cpp     | 2 +-
+ Amaya/amaya/wxdialog/OpenDocDlgWX.cpp    | 6 +++---
+ Amaya/amaya/wxdialog/PreferenceDlgWX.cpp | 2 +-
+ Amaya/amaya/wxdialog/SaveAsDlgWX.cpp     | 2 +-
+ Amaya/amaya/wxdialog/StyleDlgWX.cpp      | 2 +-
+ Amaya/amaya/wxdialogapi.c                | 2 +-
+ 8 files changed, 10 insertions(+), 10 deletions(-)
+ mode change 100644 => 100755 Amaya/amaya/wxdialog/HRefDlgWX.cpp
+ mode change 100644 => 100755 Amaya/amaya/wxdialog/ImageDlgWX.cpp
+ mode change 100644 => 100755 Amaya/amaya/wxdialog/ObjectDlgWX.cpp
+ mode change 100644 => 100755 Amaya/amaya/wxdialog/OpenDocDlgWX.cpp
+ mode change 100644 => 100755 Amaya/amaya/wxdialog/PreferenceDlgWX.cpp
+ mode change 100644 => 100755 Amaya/amaya/wxdialog/SaveAsDlgWX.cpp
+ mode change 100644 => 100755 Amaya/amaya/wxdialog/StyleDlgWX.cpp
+ mode change 100644 => 100755 Amaya/amaya/wxdialogapi.c
+
+diff --git a/Amaya/amaya/wxdialog/HRefDlgWX.cpp b/Amaya/amaya/wxdialog/HRefDlgWX.cpp
+old mode 100644
+new mode 100755
+index 46fc4c1..ab7fd67
+--- a/Amaya/amaya/wxdialog/HRefDlgWX.cpp
++++ b/Amaya/amaya/wxdialog/HRefDlgWX.cpp
+@@ -159,7 +159,7 @@ void HRefDlgWX::OnBrowse( wxCommandEvent& event )
+      _T(""),
+      _T(""), 
+      m_Filter,
+-     wxOPEN | wxCHANGE_DIR /* wxCHANGE_DIR -> remember the last directory used. */
++     wxFD_OPEN | wxFD_CHANGE_DIR /* wxFD_CHANGE_DIR -> remember the last directory used. */
+      );
+   wxString url = XRCCTRL(*this, "wxID_COMBOBOX", wxComboBox)->GetValue();
+   if (url.IsEmpty())
+diff --git a/Amaya/amaya/wxdialog/ImageDlgWX.cpp b/Amaya/amaya/wxdialog/ImageDlgWX.cpp
+old mode 100644
+new mode 100755
+index 71a371f..fd7a64a
+--- a/Amaya/amaya/wxdialog/ImageDlgWX.cpp
++++ b/Amaya/amaya/wxdialog/ImageDlgWX.cpp
+@@ -253,7 +253,7 @@ void ImageDlgWX::OnBrowseButton( wxCommandEvent& event )
+      _T(""),
+      _T(""), 
+      m_Filter,
+-     wxOPEN | wxCHANGE_DIR /* remember the last directory used. */);
++     wxFD_OPEN | wxFD_CHANGE_DIR /* remember the last directory used. */);
+ 
+   // set an initial path
+   wxString url = XRCCTRL(*this, "wxID_URL", wxTextCtrl)->GetValue( );
+diff --git a/Amaya/amaya/wxdialog/ObjectDlgWX.cpp b/Amaya/amaya/wxdialog/ObjectDlgWX.cpp
+old mode 100644
+new mode 100755
+index 8a1269a..ba94525
+--- a/Amaya/amaya/wxdialog/ObjectDlgWX.cpp
++++ b/Amaya/amaya/wxdialog/ObjectDlgWX.cpp
+@@ -272,7 +272,7 @@ void ObjectDlgWX::OnBrowseButton( wxCommandEvent& event )
+      _T(""),
+      _T(""), 
+      m_Filter,
+-     wxOPEN | wxCHANGE_DIR /* wxCHANGE_DIR -> remember the last directory used. */
++     wxFD_OPEN | wxFD_CHANGE_DIR /* wxFD_CHANGE_DIR -> remember the last directory used. */
+      );
+ 
+   // set an initial path
+diff --git a/Amaya/amaya/wxdialog/OpenDocDlgWX.cpp b/Amaya/amaya/wxdialog/OpenDocDlgWX.cpp
+old mode 100644
+new mode 100755
+index 300681d..003b300
+--- a/Amaya/amaya/wxdialog/OpenDocDlgWX.cpp
++++ b/Amaya/amaya/wxdialog/OpenDocDlgWX.cpp
+@@ -352,7 +352,7 @@ void OpenDocDlgWX::OnFilenameButton( wxCommandEvent& event )
+       p_dlg = new wxFileDialog(this,
+                                TtaConvMessageToWX( TtaGetMessage (AMAYA, AM_OPEN_URL) ),
+                                _T(""), _T(""), _T("Templates (*.xtd)|*.xtd"),
+-                               wxOPEN | wxCHANGE_DIR);
++                               wxFD_OPEN | wxFD_CHANGE_DIR);
+       url = XRCCTRL(*this, "wxID_TEMPLATEFILENAME", wxComboBox)->GetValue( );
+     }
+   else
+@@ -360,7 +360,7 @@ void OpenDocDlgWX::OnFilenameButton( wxCommandEvent& event )
+       p_dlg = new wxFileDialog (this,
+                                 TtaConvMessageToWX( TtaGetMessage (AMAYA, AM_OPEN_URL) ),
+                                 _T(""),_T(""), m_Filter,
+-                                wxOPEN | wxCHANGE_DIR);
++                                wxFD_OPEN | wxFD_CHANGE_DIR);
+ 
+       // get the combobox current url
+       url = XRCCTRL(*this, "wxID_COMBOBOX", wxComboBox)->GetValue( );
+@@ -678,7 +678,7 @@ void OpenDocDlgWX::OnTemplateButton( wxCommandEvent& event )
+ 
+   p_dlg = new wxFileDialog (this, TtaConvMessageToWX( TtaGetMessage (AMAYA, AM_OPEN_URL) ),
+                             _T(""), _T(""), _T("Templates (*.xtd)|*.xtd"),
+-                            wxOPEN | wxCHANGE_DIR);
++                            wxFD_OPEN | wxFD_CHANGE_DIR);
+   url = XRCCTRL(*this, "wxID_TEMPLATEFILENAME", wxComboBox)->GetValue( );
+  // set an initial path
+  if (url.StartsWith(_T("http")) ||
+diff --git a/Amaya/amaya/wxdialog/PreferenceDlgWX.cpp b/Amaya/amaya/wxdialog/PreferenceDlgWX.cpp
+old mode 100644
+new mode 100755
+index 324da8f..a0954ce
+--- a/Amaya/amaya/wxdialog/PreferenceDlgWX.cpp
++++ b/Amaya/amaya/wxdialog/PreferenceDlgWX.cpp
+@@ -1367,7 +1367,7 @@ void PreferenceDlgWX::OnTemplateChoose(wxCommandEvent& event)
+   p_dlg = new wxFileDialog(this,
+                            TtaConvMessageToWX( TtaGetMessage (AMAYA, AM_OPEN_URL) ),
+                            _T(""), _T(""), _T("Templates (*.xtd)|*.xtd"),
+-                           wxOPEN | wxCHANGE_DIR);
++                           wxFD_OPEN | wxFD_CHANGE_DIR);
+   if (p_dlg->ShowModal() == wxID_OK)
+     {
+       path = p_dlg->GetPath();
+diff --git a/Amaya/amaya/wxdialog/SaveAsDlgWX.cpp b/Amaya/amaya/wxdialog/SaveAsDlgWX.cpp
+old mode 100644
+new mode 100755
+index 89ef786..111a8a5
+--- a/Amaya/amaya/wxdialog/SaveAsDlgWX.cpp
++++ b/Amaya/amaya/wxdialog/SaveAsDlgWX.cpp
+@@ -488,7 +488,7 @@ void SaveAsDlgWX::OnBrowseButton( wxCommandEvent& event )
+      _T(""),
+      _T(""), 
+      wx_filter,
+-     wxSAVE | wxCHANGE_DIR /* remember the last directory used. */
++     wxFD_SAVE | wxFD_CHANGE_DIR /* remember the last directory used. */
+      );
+   
+   // force the directory and file name, except for W3 docs on windows 
+diff --git a/Amaya/amaya/wxdialog/StyleDlgWX.cpp b/Amaya/amaya/wxdialog/StyleDlgWX.cpp
+old mode 100644
+new mode 100755
+index 6c9a719..381296a
+--- a/Amaya/amaya/wxdialog/StyleDlgWX.cpp
++++ b/Amaya/amaya/wxdialog/StyleDlgWX.cpp
+@@ -1976,7 +1976,7 @@ void StyleDlgWX::OnBrowseButton( wxCommandEvent& event )
+      _T(""),
+      _T(""), 
+      _T("*.*"),
+-     wxOPEN | wxCHANGE_DIR // wxCHANGE_DIR -> remember the last directory used.
++     wxFD_OPEN | wxFD_CHANGE_DIR // wxFD_CHANGE_DIR -> remember the last directory used.
+      );
+ 
+   // do not force the directory, let wxWidgets choose for the current one
+diff --git a/Amaya/amaya/wxdialogapi.c b/Amaya/amaya/wxdialogapi.c
+old mode 100644
+new mode 100755
+index dcd68c2..7745c3b
+--- a/Amaya/amaya/wxdialogapi.c
++++ b/Amaya/amaya/wxdialogapi.c
+@@ -748,7 +748,7 @@ ThotBool CreateSaveObject (int ref, ThotWindow parent, char* objectname)
+                                           _T(""),
+                                           TtaConvMessageToWX( objectname ),
+                                           wx_filter,
+-                                          wxSAVE | wxCHANGE_DIR /* remember the last directory used. */
++                                          wxFD_SAVE | wxFD_CHANGE_DIR /* remember the last directory used. */
+                                           );
+ 
+   // do not force the directory, let wxWidgets choose for the current one
+-- 
+2.11.0
+
