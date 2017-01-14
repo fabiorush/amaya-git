@@ -10,7 +10,7 @@ depends=('gtk2' 'libsm' 'raptor1' 'glu' 'libxxf86vm' 'wxgtk')
 makedepends=('git' 'perl' 'mesa' 'clang')
 provides=('amaya')
 conflicts=('amaya')
-source=("git+https://github.com/fabiorush/Amaya.git" \
+source=("git+https://github.com/w3c/Amaya.git" \
   'http://www.w3.org/Amaya/Distribution/Dutch.tgz' \
   'http://www.w3.org/Amaya/Distribution/German.tgz' \
   'http://www.w3.org/Amaya/Distribution/Italian.tgz'  \
