@@ -1,0 +1,301 @@
+From 88f19c3b014b261754b7dba9e4004cec4bc32ca0 Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Mon, 16 Jan 2017 16:35:20 -0300
+Subject: [PATCH 18/18] Update raptor from v1 to v2
+
+---
+ Amaya/annotlib/AHTrdf2annot.c | 27 ++++++++++++++-------------
+ Amaya/annotlib/ANNOTevent.c   |  8 +++++---
+ Amaya/annotlib/ANNOTschemas.c | 31 ++++++++++++++++---------------
+ Amaya/configure               |  2 +-
+ Amaya/configure.in            |  2 +-
+ 5 files changed, 37 insertions(+), 33 deletions(-)
+
+diff --git a/Amaya/annotlib/AHTrdf2annot.c b/Amaya/annotlib/AHTrdf2annot.c
+index e376383..2810414 100644
+--- a/Amaya/annotlib/AHTrdf2annot.c
++++ b/Amaya/annotlib/AHTrdf2annot.c
+@@ -32,7 +32,7 @@
+ #include "ANNOTtools_f.h"
+ 
+ /* RDF parser */
+-#include "raptor.h"
++#include "raptor2.h"
+ 
+ /* Amaya includes */
+ #include "AHTURLTools_f.h"
+@@ -83,6 +83,7 @@ typedef struct _ParseContext
+ } ParseContext, *ParseContextP;
+ 
+ #define AnnTriple const raptor_statement
++extern raptor_world* raptor_world_obj;
+ 
+ /* ------------------------------------------------------------
+    ParseIdFragment
+@@ -197,8 +198,8 @@ static ThotBool FillAnnotField( AnnotMeta* annot,
+ 	   contains (predicate, DC1_NS, DC_CREATOR))
+     {
+ 
+-      if (triple && (triple->object_type == RAPTOR_IDENTIFIER_TYPE_RESOURCE 
+-	  || triple->object_type == RAPTOR_IDENTIFIER_TYPE_ANONYMOUS))
++      if (triple && (triple->object->type == RAPTOR_TERM_TYPE_URI 
++	  || triple->object->type == RAPTOR_TERM_TYPE_BLANK))
+ 	annot->creator = ANNOT_FindRDFResource (rdf_model, object, TRUE);
+       else
+ 	{
+@@ -397,7 +398,7 @@ static void Finish_FindAnnot(void)
+      triple - an RDF triple
+      context - pointer to a ParseContext structure
+  ------------------------------------------------------------*/
+-static void triple_handler (void * context, const raptor_statement *triple)
++static void triple_handler (void * context, raptor_statement *triple)
+ {
+   List **listP = ((ParseContextP) context)->annot_list;
+   List **rdf_model = ((ParseContextP) context)->rdf_model;
+@@ -411,7 +412,7 @@ static void triple_handler (void * context, const raptor_statement *triple)
+       AnnotMeta *annot;
+ 
+       /* if it's an anoynmous subject, add the base_uri */
+-      if (triple->subject_type == RAPTOR_IDENTIFIER_TYPE_ANONYMOUS)
++      if (triple->subject->type == RAPTOR_TERM_TYPE_BLANK)
+ 	{
+ 	  ParseContext *parseCtx = (ParseContext *) context;
+ 	  char *base_uri = parseCtx->base_uri;
+@@ -422,9 +423,9 @@ static void triple_handler (void * context, const raptor_statement *triple)
+       else
+ 	subject = (char *) AM_RAPTOR_URI_AS_STRING(triple->subject);
+ 
+-      if (triple->object_type ==  RAPTOR_IDENTIFIER_TYPE_LITERAL)
++      if (triple->object->type ==  RAPTOR_TERM_TYPE_LITERAL)
+ 	object = (char *) triple->object;
+-      else if (triple->object_type ==  RAPTOR_IDENTIFIER_TYPE_ANONYMOUS)
++      else if (triple->object->type ==  RAPTOR_TERM_TYPE_BLANK)
+ 	{
+ 	  ParseContext *parseCtx = (ParseContext *) context;
+ 	  char *base_uri = parseCtx->base_uri;
+@@ -483,9 +484,9 @@ static void triple_handler (void * context, const raptor_statement *triple)
+ 
+ 	  SCHEMA_AddStatement (subjectP, predicateP, objectP);
+ 	}
+-      if (triple->subject_type == RAPTOR_IDENTIFIER_TYPE_ANONYMOUS)
++      if (triple->subject->type == RAPTOR_TERM_TYPE_BLANK)
+ 	TtaFreeMemory (subject);
+-      if (triple->object_type ==  RAPTOR_IDENTIFIER_TYPE_ANONYMOUS)
++      if (triple->object->type ==  RAPTOR_TERM_TYPE_BLANK)
+ 	TtaFreeMemory (object);
+     }
+ }
+@@ -517,7 +518,7 @@ List *RDF_parseFile (char *file_name, List **rdf_model)
+ 
+   annot_list = NULL;
+ 
+-  rdfxml_parser = raptor_new_parser ("rdfxml");
++  rdfxml_parser = raptor_new_parser (raptor_world_obj, "rdfxml");
+ 
+   if (!rdfxml_parser) {
+      AnnotList_free (annot_list);
+@@ -550,15 +551,15 @@ List *RDF_parseFile (char *file_name, List **rdf_model)
+    /* remember the base name for anoynmous subjects */
+   ctx.base_uri = full_file_name;
+ 
+-  raptor_set_statement_handler(rdfxml_parser, (void *) &ctx, triple_handler); 
++  raptor_parser_set_statement_handler(rdfxml_parser, (void *) &ctx, triple_handler); 
+   tmp = (char *) raptor_uri_filename_to_uri_string ((const char *) path);
+-  uri = raptor_new_uri ((const unsigned char *) tmp);
++  uri = raptor_new_uri (raptor_world_obj, (const unsigned char *) tmp);
+ #ifdef _WX
+   TtaFreeMemory (path);
+ #endif /* _WX */
+   TtaFreeMemory (tmp);
+ 
+-  if (raptor_parse_file (rdfxml_parser, uri, NULL))
++  if (raptor_parser_parse_file (rdfxml_parser, uri, NULL))
+     {
+       AnnotList_free (annot_list);
+       /* do not free rdf_model here; it may not have been empty to start */
+diff --git a/Amaya/annotlib/ANNOTevent.c b/Amaya/annotlib/ANNOTevent.c
+index 407434a..1ff38d2 100644
+--- a/Amaya/annotlib/ANNOTevent.c
++++ b/Amaya/annotlib/ANNOTevent.c
+@@ -49,7 +49,7 @@
+ 
+ /* RDF parser */
+ #if defined(ANNOTATIONS) && !defined(BOOKMARKS)
+-#include "raptor.h"
++#include "raptor2.h"
+ #endif /* BOOKMARKS */
+ 
+ #define DEFAULT_ALGAE_QUERY "w3c_algaeQuery=(ask '((?p ?s ?o)) :collect '(?p ?s ?o))"
+@@ -73,6 +73,8 @@ static ThotBool annotPOSTUpdate; /* use the POST method for updating annotations
+ static Element last_selected_annotation[DocumentTableLength];
+ 
+ static ThotBool schema_init = FALSE;
++raptor_world* raptor_world_obj;
++
+ 
+ /* the structure used for storing the context of the 
+    Annot_Raisesourcedoc_callback function */
+@@ -342,7 +344,7 @@ void ANNOT_Init ()
+      Redland initializes raptor itself in that case */
+ #ifndef BOOKMARKS
+   /* initializes raptor */
+-  raptor_init ();
++  raptor_world_obj = raptor_new_world();
+ #endif /* ! BOOKMARKS */
+ }
+ 
+@@ -383,7 +385,7 @@ void ANNOT_Quit ()
+   /* frees raptor if we're using redland and not using bookmarks.
+      Redland frees raptor itself in that case */
+ #ifndef BOOKMARKS
+-  raptor_finish ();
++  raptor_free_world(raptor_world_obj);
+ #endif /* ! BOOKMARKS */
+ }
+ 
+diff --git a/Amaya/annotlib/ANNOTschemas.c b/Amaya/annotlib/ANNOTschemas.c
+index 5178b49..20a9f3e 100644
+--- a/Amaya/annotlib/ANNOTschemas.c
++++ b/Amaya/annotlib/ANNOTschemas.c
+@@ -39,7 +39,7 @@
+ #include "ANNOTevent_f.h"
+ 
+ /* RDF parser */
+-#include "raptor.h"
++#include "raptor2.h"
+ 
+ /* amaya includes */
+ #include "AHTURLTools_f.h"
+@@ -73,7 +73,6 @@ RDFClassP THREAD_REPLY_CLASS;
+ RDFClassP DEFAULT_REPLY_TYPE;
+ #endif /* ANNOT_ON_ANNOT */
+ 
+-
+ typedef struct _ReadCallbackContext
+ {
+   char filename[MAX_LENGTH];
+@@ -85,6 +84,8 @@ typedef struct _ParseContext
+   char *base_uri;   /* base URI for anonymous RDF names */
+ } ParseContext, *ParseContextP;
+ 
++extern raptor_world* raptor_world_obj;
++
+ /*------------------------------------------------------------
+    _ListSearchResource
+   ------------------------------------------------------------*/
+@@ -168,7 +169,7 @@ static void _AddSubClass( RDFClassP c, RDFClassP sub )
+      triple - an RDF triple
+      context - pointer to an RDFResource list
+  ------------------------------------------------------------*/
+-static void as_triple_handler (void * context, const raptor_statement *triple)
++static void as_triple_handler (void * context, raptor_statement *triple)
+ {
+ 
+   ParseContextP parse_ctx = (ParseContextP) context;
+@@ -186,30 +187,30 @@ static void as_triple_handler (void * context, const raptor_statement *triple)
+       RDFResourceP objectP;
+ 
+       /* if it's an anoynmous subject, add the base_uri */
+-      if (triple->subject_type == RAPTOR_IDENTIFIER_TYPE_ANONYMOUS)
++      if (triple->subject->type == RAPTOR_TERM_TYPE_BLANK)
+ 	{
+ 	  char *base_uri = parse_ctx->base_uri;
+-	  char *ptr = (char *) triple->subject;
++	  char *ptr = (char *) triple->subject->value.blank.string;
+ 	  subject = (char *)TtaGetMemory (strlen (base_uri) + strlen (ptr) + 2);
+ 	  sprintf (subject, "%s#%s", base_uri, ptr);
+ 	}
+       else
+-	subject = (char *) AM_RAPTOR_URI_AS_STRING(triple->subject);
++	subject = (char *) AM_RAPTOR_URI_AS_STRING(triple->subject->value.uri);
+ 
+       subjectP = ANNOT_FindRDFResource (listP, subject, TRUE);
+ 
+-      if (triple->object_type ==  RAPTOR_IDENTIFIER_TYPE_LITERAL)
++      if (triple->object->type ==  RAPTOR_TERM_TYPE_LITERAL)
+ 	object = (char *) triple->object;
+-      else if (triple->object_type ==  RAPTOR_IDENTIFIER_TYPE_ANONYMOUS)
++      else if (triple->object->type ==  RAPTOR_TERM_TYPE_BLANK)
+ 	{
+ 	  ParseContext *parseCtx = (ParseContext *) context;
+ 	  char *base_uri = parseCtx->base_uri;
+-	  char *ptr =  (char *) triple->object;
++	  char *ptr =  (char *) triple->object->value.blank.string;
+ 	  object = (char *) TtaGetMemory (strlen (base_uri) + strlen (ptr) + 2);
+ 	  sprintf (object, "%s#%s", base_uri, ptr);
+ 	}
+       else
+-	object = (char *) AM_RAPTOR_URI_AS_STRING(triple->object);
++	object = (char *) AM_RAPTOR_URI_AS_STRING(triple->object->value.uri);
+ 
+       objectP = ANNOT_FindRDFResource (listP, object, TRUE);
+ 
+@@ -231,7 +232,7 @@ static void as_triple_handler (void * context, const raptor_statement *triple)
+ 	  subjectP->class_->subClasses = NULL;
+ 	}
+ 
+-      if (triple->subject_type == RAPTOR_IDENTIFIER_TYPE_ANONYMOUS)
++      if (triple->subject->type == RAPTOR_TERM_TYPE_BLANK)
+ 	TtaFreeMemory (subject);
+     }
+ }
+@@ -261,7 +262,7 @@ static void ReadSchema_callback (Document doc, int status,
+ 
+   if (status == HT_OK)
+     {
+-      rdfxml_parser = raptor_new_parser ("rdfxml");
++      rdfxml_parser = raptor_new_parser (raptor_world_obj, "rdfxml");
+ 
+       if (!rdfxml_parser)
+ 	return;
+@@ -280,18 +281,18 @@ static void ReadSchema_callback (Document doc, int status,
+       /* remember the base name for anoynmous subjects */
+       parse_ctx->base_uri = full_file_name;
+       parse_ctx->annot_schema_list = &annot_schema_list;
+-      raptor_set_statement_handler (rdfxml_parser, (void *) parse_ctx, as_triple_handler);
++      raptor_parser_set_statement_handler (rdfxml_parser, (void *) parse_ctx, as_triple_handler);
+       
+       {
+ 	unsigned char *tmp;
+ 	
+ 	tmp = raptor_uri_filename_to_uri_string ((const char *) ctx->filename);
+ 	/* tmp = raptor_uri_filename_to_uri_string ((const char *) "/home/kahan/Amaya/config/annotschema.rdf"); */
+-	uri = raptor_new_uri ((const unsigned char *) tmp);
++	uri = raptor_new_uri (raptor_world_obj, (const unsigned char *) tmp);
+ 	free (tmp);
+       }
+ 
+-      parse = raptor_parse_file (rdfxml_parser, uri, NULL);
++      parse = raptor_parser_parse_file (rdfxml_parser, uri, NULL);
+ 
+       if (!parse)
+ 	TtaSetStatus (doc, 1, "Schema read", NULL); /* @@ */
+diff --git a/Amaya/configure b/Amaya/configure
+index 56b343d..e656d57 100755
+--- a/Amaya/configure
++++ b/Amaya/configure
+@@ -14616,7 +14616,7 @@ if test "$with_raptor" = "yes" ; then
+ 		cd ..
+ 	else
+ 		raptor_includes=`$RAPTOR_CONFIG --cflags`
+-		raptor_libs="-lraptor"
++		raptor_libs="-lraptor2"
+ 		BUILDRAPTOR=""
+  		AMAYA_ANNOT_OPTIONS="$AMAYA_ANNOT_OPTIONS"
+ 		AMAYA_ANNOT_INCLUDES="$raptor_includes -I\$(THOTDIR)/thotlib/include"
+diff --git a/Amaya/configure.in b/Amaya/configure.in
+index 872713b..154a371 100644
+--- a/Amaya/configure.in
++++ b/Amaya/configure.in
+@@ -893,7 +893,7 @@ if test "$with_raptor" = "yes" ; then
+ 		cd ..
+ 	else
+ 		raptor_includes=`$RAPTOR_CONFIG --cflags`
+-		raptor_libs="-lraptor"
++		raptor_libs="-lraptor2"
+ 		BUILDRAPTOR=""
+  		AMAYA_ANNOT_OPTIONS="$AMAYA_ANNOT_OPTIONS"
+ 		AMAYA_ANNOT_INCLUDES="$raptor_includes -I\$(THOTDIR)/thotlib/include"
+-- 
+2.11.0
+

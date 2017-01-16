@@ -1,7 +1,7 @@
 From b51ff9e765071b0734d5f80ecd057adf4c0e0dfa Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Thu, 5 Jan 2017 21:55:49 -0300
-Subject: [PATCH 08/16] Make explicity cast for gzFile on gzread calls
+Subject: [PATCH 08/18] Make explicity cast for gzFile on gzread calls
 
 ---
  Amaya/amaya/Xml2thot.c  | 2 +-

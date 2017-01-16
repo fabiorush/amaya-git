@@ -1,7 +1,7 @@
 From c7490d10c722b71ed9e81a046a69b931a6a83fa9 Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Thu, 5 Jan 2017 18:04:37 -0300
-Subject: [PATCH 04/16] Removed references to WXK_PRIOR and WXK_NEXT
+Subject: [PATCH 04/18] Removed references to WXK_PRIOR and WXK_NEXT
 
 ---
  Amaya/thotlib/dialogue/appdialogue_wx.c | 11 -----------

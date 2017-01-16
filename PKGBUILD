@@ -6,7 +6,7 @@ pkgdesc="W3C's WYSIWYG HTML Editor"
 arch=('i686' 'x86_64')
 url="http://www.w3.org/Amaya/"
 license=('W3C')
-depends=('gtk2' 'libsm' 'raptor1' 'glu' 'libxxf86vm' 'wxgtk')
+depends=('gtk2' 'libsm' 'raptor' 'glu' 'libxxf86vm' 'wxgtk')
 makedepends=('git' 'perl' 'mesa' 'clang')
 provides=('amaya')
 conflicts=('amaya')
@@ -47,8 +47,9 @@ build() {
   mkdir ${_gui}; cd ${_gui}
 
   #  CC=gcc-4.7 CXX=g++-4.7 LD=g++-4.7 \
-    ../configure --prefix=/usr/share --exec=/usr/share --datadir=/usr/share \
-    --enable-system-raptor --enable-system-wx --with-gl
+  ../configure --prefix=/usr/share --exec=/usr/share --datadir=/usr/share \
+    --enable-system-raptor --enable-system-wx --with-gl \
+    RAPTOR_CONFIG="/usr/bin/pkg-config raptor2"
   make LDFLAGS="-lz -lpng -ljpeg -lssl"
 }
 

@@ -1,7 +1,7 @@
 From b9364b21d15b6d6519d0ab8be8c0ff69ca7f2779 Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Tue, 10 Jan 2017 18:09:27 -0300
-Subject: [PATCH 14/16] Changed return from FALSE to NULL
+Subject: [PATCH 14/18] Changed return from FALSE to NULL
 
 ---
  Amaya/amaya/templates.c     | 5 +----

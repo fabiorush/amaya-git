@@ -1,7 +1,7 @@
 From f24aa6ce482652a492a4c15e374f2575b02ce0eb Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Thu, 5 Jan 2017 19:28:17 -0300
-Subject: [PATCH 07/16] Added missing colourdata.h include
+Subject: [PATCH 07/18] Added missing colourdata.h include
 
 ---
  Amaya/amaya/wxdialog/PreferenceDlgWX.h | 1 +

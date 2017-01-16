@@ -1,7 +1,7 @@
 From 2fe946829743e9edde9ee59b6108346f75454b98 Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Tue, 10 Jan 2017 19:27:08 -0300
-Subject: [PATCH 15/16] Updated to remove clang dependency
+Subject: [PATCH 15/18] Updated to remove clang dependency
 
 ---
  Amaya/amaya/Makefile.in | 4 ++--
