@@ -1,7 +1,7 @@
 From d5916c0e64bbbc3c3e3b81f000849d1f70ee201a Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Mon, 16 Jan 2017 12:05:27 -0300
-Subject: [PATCH 17/18] Changed rows number to dynamic
+Subject: [PATCH 17/19] Changed rows number to dynamic
 
 ---
  Amaya/resources/xrc/DocInfoDlgWX.xrc    | 2 +-

@@ -1,7 +1,7 @@
 From c97651b487432c8f69fce9efc9781d7ea5daea17 Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Mon, 9 Jan 2017 17:00:09 -0300
-Subject: [PATCH 12/18] Fixed duplicate start call on pnghandler.c
+Subject: [PATCH 12/19] Fixed duplicate start call on pnghandler.c
 
 ---
  Amaya/thotlib/image/pnghandler.c | 4 ++--

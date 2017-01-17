@@ -1,7 +1,7 @@
 From 3746f779f4d26d26f9ae6eb59a0e8180b522b1c2 Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Thu, 5 Jan 2017 21:58:07 -0300
-Subject: [PATCH 09/18] Add check if the dir is open before transversing
+Subject: [PATCH 09/19] Add check if the dir is open before transversing
 
 ---
  Amaya/amaya/query.c | 4 ++++

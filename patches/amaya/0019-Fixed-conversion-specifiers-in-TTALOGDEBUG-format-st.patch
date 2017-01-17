@@ -1,0 +1,54 @@
+From 520994fe4cd97da84ddca92fbe32ec6c3d45127f Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Tue, 17 Jan 2017 12:55:46 -0300
+Subject: [PATCH 19/19] Fixed conversion specifiers in TTALOGDEBUG format
+ strings
+
+---
+ Amaya/thotlib/dialogue/AmayaFrame.cpp        | 2 +-
+ Amaya/thotlib/dialogue/AmayaNormalWindow.cpp | 2 +-
+ Amaya/thotlib/dialogue/openglfont.c          | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Amaya/thotlib/dialogue/AmayaFrame.cpp b/Amaya/thotlib/dialogue/AmayaFrame.cpp
+index 2194d8f..45ad65d 100644
+--- a/Amaya/thotlib/dialogue/AmayaFrame.cpp
++++ b/Amaya/thotlib/dialogue/AmayaFrame.cpp
+@@ -756,7 +756,7 @@ void AmayaFrame::RefreshStatusBarText()
+   -----------------------------------------------------------------------*/
+ void AmayaFrame::SetStatusBarText( const wxString & text )
+ {
+-  TTALOGDEBUG_1( TTA_LOG_DIALOG, _T("AmayaFrame::SetStatusBarText - len=%d"), text.Length() );
++  TTALOGDEBUG_1( TTA_LOG_DIALOG, _T("AmayaFrame::SetStatusBarText - len=%zd"), text.Length());
+ 
+   // the new text is assigned
+   m_StatusBarText = text;
+diff --git a/Amaya/thotlib/dialogue/AmayaNormalWindow.cpp b/Amaya/thotlib/dialogue/AmayaNormalWindow.cpp
+index 404e4c4..1acd3e3 100755
+--- a/Amaya/thotlib/dialogue/AmayaNormalWindow.cpp
++++ b/Amaya/thotlib/dialogue/AmayaNormalWindow.cpp
+@@ -1013,7 +1013,7 @@ void AmayaNormalWindow::OnMenuItem( wxCommandEvent& event )
+         }
+     }
+ 
+-  TTALOGDEBUG_2( TTA_LOG_DIALOG, _T("AmayaNormalWindow::OnMenuItem id=%d action_id=%d"), id, action_id );
++  TTALOGDEBUG_2( TTA_LOG_DIALOG, _T("AmayaNormalWindow::OnMenuItem id=%ld action_id=%d"), id, action_id );
+   
+   /* if this menu is the context menu it's possible that the current active document is not the wanted one */
+   if (p_menu && p_menu == p_context_menu)
+diff --git a/Amaya/thotlib/dialogue/openglfont.c b/Amaya/thotlib/dialogue/openglfont.c
+index f515bed..a5860f1 100644
+--- a/Amaya/thotlib/dialogue/openglfont.c
++++ b/Amaya/thotlib/dialogue/openglfont.c
+@@ -266,7 +266,7 @@ Char_Cache_index *Char_index_lookup_cache (GL_font *font, unsigned int idx,
+       }
+ 
+ #ifdef _WX
+-  TTALOGDEBUG_3( TTA_LOG_FONT, _T("new cache entry font=%x idx=%d datatype=%d"), font, idx, data_type );
++  TTALOGDEBUG_3( TTA_LOG_FONT, _T("new cache entry font=%lx idx=%u datatype=%u"), (long int)font, idx, data_type );
+ #endif /* _WX */
+ 
+   /* nothing has been found : now create a new cache entry */
+-- 
+2.11.0
+

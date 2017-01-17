@@ -1,7 +1,7 @@
 From 65f95d310a6574593574dcb629a5d9491cda198d Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Thu, 5 Jan 2017 19:18:33 -0300
-Subject: [PATCH 05/18] Updated wxWidgets file dialog enum
+Subject: [PATCH 05/19] Updated wxWidgets file dialog enum
 
 ---
  Amaya/amaya/wxdialog/HRefDlgWX.cpp       | 2 +-

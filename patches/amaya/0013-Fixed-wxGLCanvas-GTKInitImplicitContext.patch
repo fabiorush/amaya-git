@@ -1,7 +1,7 @@
 From 4e5bc38a8af8a925ac5e73c952d377b52d6ed243 Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Tue, 10 Jan 2017 15:12:53 -0300
-Subject: [PATCH 13/18] Fixed wxGLCanvas::GTKInitImplicitContext
+Subject: [PATCH 13/19] Fixed wxGLCanvas::GTKInitImplicitContext
 
 ---
  Amaya/thotlib/dialogue/AmayaCanvas.cpp | 1 -

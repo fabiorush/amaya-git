@@ -1,7 +1,7 @@
 From 409ce129bdccccbb159c83734d7c129d97d6b4b1 Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Wed, 11 Jan 2017 17:13:43 -0300
-Subject: [PATCH 16/18] Change keyboard event macro to EVT_CHAR instead of
+Subject: [PATCH 16/19] Change keyboard event macro to EVT_CHAR instead of
  EVT_CHAR_HOOK
 
 ---
