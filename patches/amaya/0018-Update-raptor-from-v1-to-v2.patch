@@ -1,7 +1,7 @@
 From 88f19c3b014b261754b7dba9e4004cec4bc32ca0 Mon Sep 17 00:00:00 2001
 From: Fabio Urquiza <fabiorush@gmail.com>
 Date: Mon, 16 Jan 2017 16:35:20 -0300
-Subject: [PATCH 18/19] Update raptor from v1 to v2
+Subject: [PATCH 18/20] Update raptor from v1 to v2
 
 ---
  Amaya/annotlib/AHTrdf2annot.c | 27 ++++++++++++++-------------

@@ -1,0 +1,25 @@
+From 1e2c8a7c72735292439a9e411c497cf300c724f8 Mon Sep 17 00:00:00 2001
+From: Fabio Urquiza <fabiorush@gmail.com>
+Date: Wed, 18 Jan 2017 09:50:37 -0300
+Subject: [PATCH 20/20] Changed rows number to dynamic
+
+---
+ Amaya/resources/xrc/PreferenceDlgWX.xrc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Amaya/resources/xrc/PreferenceDlgWX.xrc b/Amaya/resources/xrc/PreferenceDlgWX.xrc
+index fe7dc9e..eaeb93a 100644
+--- a/Amaya/resources/xrc/PreferenceDlgWX.xrc
++++ b/Amaya/resources/xrc/PreferenceDlgWX.xrc
+@@ -839,7 +839,7 @@
+       <object class="sizeritem">
+         <object class="wxFlexGridSizer">
+           <cols>3</cols>
+-          <rows>4</rows>
++          <rows>0</rows>
+           <object class="sizeritem">
+             <object class="wxStaticText" name="wxID_LABEL_TEXTCOLOR">
+               <label>*Couleur du texte*</label>
+-- 
+2.11.0
+
